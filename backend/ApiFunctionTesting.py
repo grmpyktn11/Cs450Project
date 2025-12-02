@@ -15,6 +15,32 @@ con = oracledb.connect(user=user, password=password, dsn=dsn)
 
 cur = con.cursor()
 
+def getPic(gameName):
+    url = f"https://store.steampowered.com/api/storesearch?term={gameName}&l=english&cc=US"
+
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        items = data.get("items",[])
+        if len(items) == 0:
+            print("no game here")
+            return
+        else:
+            item = items[0]
+            name = item['name'].replace(' ','_')
+            storeUrl = f"https://store.steampowered.com/app/{item['id']}/{name}/"
+            detailsUrl = f"https://store.steampowered.com/api/appdetails?appids={item['id']}&cc=US&1-english"
+            details = requests.get(detailsUrl)
+            if details.status_code != 200:
+                print('didnt get game info')
+                return
+            data = details.json()
+            gameData = data[str(item['id'])]['data']
+            return gameData.get('header_image')
+
+
+
 #function to return a dict with the info of the steam game
 def search_games(gameName):
     url = f"https://store.steampowered.com/api/storesearch?term={gameName}&l=english&cc=US"
@@ -126,7 +152,8 @@ def searchGame(gameName):
 if __name__ == "__main__":
     try:
         # search_games('deltarune')
-        print(searchGame("undertale"))
+        # print(searchGame("undertale"))
+        print(getPic('undertale'))
     finally:
         cur.close()
         con.close()
