@@ -25,8 +25,9 @@ function App() {
 
   return (
     <div style={{ padding: "40px" }}>
-      <h1>steam database</h1>
-
+      <h1> Steam database</h1>
+      <h2>By Emily Hansen and Khalid Moosa</h2>
+      <p style={{color: "#5e5454ff"}}>Search for your favorite Steam games below!</p>
       <input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -46,7 +47,10 @@ function App() {
 
         {gameInfo && (
           <div>
-            <p><strong>Name:</strong> {gameInfo.gamename}</p>
+            <div class="top-row">
+              <img src={gameInfo.image} alt={gameInfo.gamename + " logo"} />
+              <h2><strong>{gameInfo.gamename}</strong></h2>
+            </div>
             <p><strong>Steam URL:</strong> <a href={gameInfo.url} target="_blank">{gameInfo.url}</a></p>
             <p><strong>Base Price:</strong> ${gameInfo.initialPrice}</p>
             <p><strong>Current Price:</strong> ${gameInfo.currentPrice}</p>

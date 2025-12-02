@@ -33,6 +33,26 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  margin-bottom: 5px;
+  color: #395A7F;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #6E9FC1;
+}
+
+.top-row {
+  display: flex;
+  align-items: center;  
+  gap: 20px;
+  margin-bottom: 20px;  
+}
+
+.top-row img {
+  width: 150px;
+  height: auto;
 }
 
 button {

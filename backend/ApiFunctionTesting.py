@@ -50,6 +50,7 @@ def search_games(gameName):
             genres = ", ".join([i['description'] for i in data[str(item['id'])]['data']['genres']])
             extractedData = {
                 'id': item['id'],
+                'image': gameData['img_logo_url'],
                 'gamename': gameData['name'],
                 'isFree': gameData['is_free'],
                 'initialPrice': gameData['price_overview']['initial'] / 100,   # convert cents to dollars
@@ -74,11 +75,12 @@ def search_games(gameName):
 def addGame(gameName):
     gameinfo = search_games(gameName)
     sql = """
-    INSERT INTO GAME (STEAMAPPID, GAMENAME, STEAMURL, BASEPRICE, CURRPRICE, RATING, GENRE, RELEASEDATE, DESCRIPTION)
-    VALUES (:1, :2, :3, :4, :5, :6, :7, TO_DATE(:8, 'Mon DD, YYYY'), :9)
+    INSERT INTO GAME (STEAMAPPID, IMAGE, GAMENAME, STEAMURL, BASEPRICE, CURRPRICE, RATING, GENRE, RELEASEDATE, DESCRIPTION)
+    VALUES (:1, :2, :3, :4, :5, :6, :7, :8, TO_DATE(:9, 'Mon DD, YYYY'), :10)
     """
     cur.execute(sql, (
         gameinfo['id'],
+        gameinfo['image'],
         gameinfo['gamename'],
         gameinfo['url'],
         gameinfo['initialPrice'],
@@ -109,7 +111,7 @@ def searchGame(gameName):
     if row:
         # Game already exists, return it as a dict
         columns = [
-            "id", "gamename", "url", "initialPrice", "currentPrice",
+            "id", "image", "gamename", "url", "initialPrice", "currentPrice",
             "rating", "genre", "releaseDate", "description"
         ]
         gameDict = dict(zip(columns, row))

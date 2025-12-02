@@ -1,5 +1,6 @@
 CREATE TABLE Game (
     steamAppId NUMBER PRIMARY KEY,
+    image VARCHAR NOT NULL,
     gameName VARCHAR2(200) NOT NULL,
     steamUrl VARCHAR2(500),
     basePrice NUMBER(10,2) NOT NULL CHECK (basePrice >= 0),
