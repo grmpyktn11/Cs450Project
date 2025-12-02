@@ -1,66 +1,26 @@
-/*
-making the genre table first
-it has no dependancies to we shoudl make it befoer others
-*/
-
-CREATE TABLE Genre (
-    genreID NUMBER PRIMARY KEY,
-    genreName VARCHAR2(100) NOT NULL UNIQUE,
-    description VARCHAR2(500)
-);
-
-
 CREATE TABLE Game (
     steamAppId NUMBER PRIMARY KEY,
+    image VARCHAR NOT NULL,
     gameName VARCHAR2(200) NOT NULL,
     steamUrl VARCHAR2(500),
     basePrice NUMBER(10,2) NOT NULL CHECK (basePrice >= 0),
+    currPrice NUMBER(10,2) NOT NULL CHECK (currPrice >= 0),
     rating NUMBER(5,2) CHECK (rating >= 0 AND rating <= 100),
+    genre VARCHAR2(100),
     releaseDate DATE,
-    description VARCHAR2(1000),
-    genreID NUMBER NOT NULL UNIQUE,
-    CONSTRAINT fk_game_genre FOREIGN KEY (genreID) 
-        REFERENCES Genre(genreID)
+    description VARCHAR2(1000)
 );
 
 CREATE TABLE PriceHistory (
     priceHistoryID NUMBER PRIMARY KEY,
-    steamAppId NUMBER NOT NULL,
-    recordedDate DATE NOT NULL,
-    discountPercent NUMBER(5,2) DEFAULT 0 
-        CHECK (discountPercent >= 0 AND discountPercent <= 100),
+    steamAppId NUMBER NOT NULL UNIQUE, 
+    originalPrice NUMBER(10,2) NOT NULL CHECK (originalPrice >= 0),
+    allTimeLow NUMBER(10,2) NOT NULL CHECK (allTimeLow >= 0),
     currentPrice NUMBER(10,2) NOT NULL CHECK (currentPrice >= 0),
-    CONSTRAINT fk_pricehistory_game FOREIGN KEY (steamAppId) 
-        REFERENCES Game(steamAppId),
-    CONSTRAINT uk_pricehistory_date UNIQUE (steamAppId, recordedDate)
-);
 
-//inserting things into the table
-INSERT INTO Genre VALUES (1, 'RPG', 'Role-playing games involving character progression and narrative choices.');
-INSERT INTO Genre VALUES (2, 'Simulation', 'Games that simulate real-world or imagined activities.');
-INSERT INTO Genre VALUES (3, 'Strategy', 'Games focused on planning, tactics, and resource management.');
-INSERT INTO Genre VALUES (4, 'Action', 'Fast-paced games emphasizing reflexes and combat.');
-
-INSERT INTO Game VALUES (
-    292030,
-    'The Witcher 3: Wild Hunt',
-    'https://store.steampowered.com/app/292030',
-    39.99,
-    93.00,
-    TO_DATE('2015-05-19', 'YYYY-MM-DD'),
-    'An epic open-world RPG where you play as Geralt of Rivia, a monster hunter.',
-    1
-);
-
-INSERT INTO Game VALUES (
-    427520,
-    'Factorio',
-    'https://store.steampowered.com/app/427520',
-    35.00,
-    90.00,
-    TO_DATE('2020-08-14', 'YYYY-MM-DD'),
-    'A factory-building game focused on resource management and automation.',
-    2
+    CONSTRAINT fk_pricehistory_game
+        FOREIGN KEY (steamAppId)
+        REFERENCES Game(steamAppId)
 );
 
 INSERT INTO Game VALUES (
