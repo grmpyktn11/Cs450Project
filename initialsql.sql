@@ -93,25 +93,25 @@ INSERT INTO PriceHistory VALUES (5, 730, TO_DATE('2025-03-01', 'YYYY-MM-DD'), 0.
 
 
 
-//test for view price history
+/*test for view price history*/
 SELECT ph.recordedDate, ph.discountPercent, ph.currentPrice
 FROM PriceHistory ph
 JOIN Game g ON ph.steamAppId = g.steamAppId
 WHERE g.gameName = 'The Witcher 3: Wild Hunt'
 ORDER BY ph.recordedDate;
 
-//find all the games that are free
+/*find all the games that are free*/
 SELECT gameName, rating
 FROM Game
 WHERE basePrice = 0;
 
-//find highest rated game by gnre
+/*find highest rated game by gnre*/
 SELECT ge.genreName, g.gameName, g.rating
 FROM Game g
 JOIN Genre ge ON g.genreID = ge.genreID
 ORDER BY g.rating DESC;
 
-//average discount per game 
+/*average discount per game */
 SELECT g.gameName, ROUND(AVG(ph.discountPercent), 2) AS avgDiscount
 FROM Game g
 JOIN PriceHistory ph ON g.steamAppId = ph.steamAppId
