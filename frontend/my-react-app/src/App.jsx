@@ -47,10 +47,10 @@ function App() {
 
         {gameInfo && (
           <div>
-            {/* <div class="top-row">
+            <div class="top-row">
               <img src={gameInfo.image} alt={gameInfo.gamename + " logo"} />
               <h2><strong>{gameInfo.gamename}</strong></h2>
-            </div> */}
+            </div>
             <p><strong>Steam URL:</strong> <a href={gameInfo.url} target="_blank">{gameInfo.url}</a></p>
             <p><strong>Base Price:</strong> ${gameInfo.initialPrice}</p>
             <p><strong>Current Price:</strong> ${gameInfo.currentPrice}</p>

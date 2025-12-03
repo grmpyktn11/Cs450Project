@@ -100,12 +100,11 @@ def search_games(gameName):
 def addGame(gameName):
     gameinfo = search_games(gameName)
     sql = """
-    INSERT INTO GAME (STEAMAPPID, IMAGE, GAMENAME, STEAMURL, BASEPRICE, CURRPRICE, RATING, GENRE, RELEASEDATE, DESCRIPTION)
+    INSERT INTO GAME (STEAMAPPID, GAMENAME, STEAMURL, BASEPRICE, CURRPRICE, RATING, GENRE, RELEASEDATE, DESCRIPTION, IMAGE)
     VALUES (:1, :2, :3, :4, :5, :6, :7, :8, TO_DATE(:9, 'Mon DD, YYYY'), :10)
     """
     cur.execute(sql, (
         gameinfo['id'],
-        getPic(gameName),
         gameinfo['gamename'],
         gameinfo['url'],
         gameinfo['initialPrice'],
@@ -113,7 +112,8 @@ def addGame(gameName):
         gameinfo['rating'],
         gameinfo['genre'],          # now a plain string
         gameinfo['releaseDate'],
-        gameinfo['description']
+        gameinfo['description'],
+        getPic(gameName)
     ))
     con.commit()
     print(f"successfully commited {gameinfo['gamename']}")
@@ -136,8 +136,8 @@ def searchGame(gameName):
     if row:
         # Game already exists, return it as a dict
         columns = [
-            "id", "image", "gamename", "url", "initialPrice", "currentPrice",
-            "rating", "genre", "releaseDate", "description"
+            "id", "gamename", "url", "initialPrice", "currentPrice",
+            "rating", "genre", "releaseDate", "description", "image"
         ]
         gameDict = dict(zip(columns, row))
         print(f"{gameinfo['gamename']} already in DB")
