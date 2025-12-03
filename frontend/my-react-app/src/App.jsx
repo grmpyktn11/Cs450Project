@@ -44,6 +44,7 @@ function App() {
 
       <div style={{ marginTop: "20px" }}>
         {error && <div style={{ color: "red" }}>{error}</div>}
+        console.log(gameInfo.image);
 
         {gameInfo && (
           <div>

@@ -76,7 +76,6 @@ def search_games(gameName):
             genres = ", ".join([i['description'] for i in data[str(item['id'])]['data']['genres']])
             extractedData = {
                 'id': item['id'],
-                'image': gameData['img_logo_url'],
                 'gamename': gameData['name'],
                 'isFree': gameData['is_free'],
                 'initialPrice': gameData['price_overview']['initial'] / 100,   # convert cents to dollars
@@ -106,7 +105,7 @@ def addGame(gameName):
     """
     cur.execute(sql, (
         gameinfo['id'],
-        gameinfo['image'],
+        getPic(gameName),
         gameinfo['gamename'],
         gameinfo['url'],
         gameinfo['initialPrice'],
