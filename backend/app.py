@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import ApiFunctionTesting
@@ -18,7 +19,12 @@ def answer():
         results = ApiFunctionTesting.searchGame(gameReq)
         if not results:
             return jsonify({"error": f"Game '{gameReq}' not found"}), 404
-        # Return the full game info as JSON
+        
+        # If it's a paid game, fetch price history
+        if not results.get('isFree'):
+            priceHistory = ApiFunctionTesting.getPriceHistory(results['id'])
+            results['priceHistory'] = priceHistory
+        
         return jsonify(results)
     except Exception as e:
         print("Error:", e)

@@ -185,6 +185,20 @@ def updatePriceHistory(steamAppId, basePrice, currentPrice):
         print(f"Created price history with base price {basePrice} and initial lowest {currentPrice}")
 
 
+def getPriceHistory(steamAppId):
+    """Fetch price history for a game"""
+    sql = "SELECT LOWESTPRICESEEN, BASEPRICE FROM PRICEHISTORY WHERE STEAMAPPID = :id"
+    cur.execute(sql, {"id": steamAppId})
+    row = cur.fetchone()
+    
+    if row:
+        return {
+            "lowestPriceSeen": row[0],
+            "basePrice": row[1]
+        }
+    return None
+
+
 def searchGame(gameName):
     """Search for a game, add it if not in database, update price history"""
     # First, search Steam for the game info
