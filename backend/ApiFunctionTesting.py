@@ -119,6 +119,18 @@ def addGame(gameName):
     print(f"successfully commited {gameinfo['gamename']}")
     return gameinfo
 
+def getPriceHistory(steamAppId):
+    """Fetch price history for a game"""
+    sql = "SELECT LOWESTPRICESEEN, BASEPRICE FROM PRICEHISTORY WHERE STEAMAPPID = :id"
+    cur.execute(sql, {"id": steamAppId})
+    row = cur.fetchone()
+    
+    if row:
+        return {
+            "lowestPriceSeen": row[0],
+            "basePrice": row[1]
+        }
+    return None
 
 #function to search for a game, adds a game if its not in the database 
 def searchGame(gameName):

@@ -56,12 +56,11 @@ export default function App() {
           </div>
           <div className="price-row">
             <div><strong>Current Price:</strong> ${gameInfo.currentPrice}</div>
+            <div><strong>All-Time Low:</strong> {gameInfo.priceHistory?.lowestPriceSeen ? `$${gameInfo.priceHistory.lowestPriceSeen}` : "N/A"}</div>
             {gameInfo.currentPrice !== gameInfo.initialPrice && (
               <>
                 <div><strong>Discount:</strong> {((gameInfo.initialPrice - gameInfo.currentPrice) / gameInfo.initialPrice * 100).toFixed(0)}%</div>
                 <div><strong>Base Price:</strong> ${gameInfo.initialPrice}</div>
-                <div>{gameInfo.priceHistory && (
-                <p><strong>All-Time Low:</strong> ${gameInfo.priceHistory.lowestPriceSeen}</p>)}</div>
               </>
             )}
           </div>
