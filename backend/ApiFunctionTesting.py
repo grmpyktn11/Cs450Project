@@ -85,7 +85,8 @@ def search_games(gameName):
                 'genre': ", ".join([g['description'] for g in gameData['genres']]),  # plain string
                 'releaseDate': gameData['release_date']['date'],
                 'description': gameData['short_description'],
-                'url': storeUrl
+                'url': storeUrl,
+                'image': getPic(gameName)
             }
             
             # print(extractedData)
@@ -101,7 +102,7 @@ def addGame(gameName):
     gameinfo = search_games(gameName)
     sql = """
     INSERT INTO GAME (STEAMAPPID, GAMENAME, STEAMURL, BASEPRICE, CURRPRICE, RATING, GENRE, RELEASEDATE, DESCRIPTION, IMAGE)
-    VALUES (:1, :2, :3, :4, :5, :6, :7, :8, TO_DATE(:9, 'Mon DD, YYYY'), :10)
+    VALUES (:1, :2, :3, :4, :5, :6, :7, TO_DATE(:8, 'Mon DD, YYYY'), :9, :10)
     """
     cur.execute(sql, (
         gameinfo['id'],
@@ -113,7 +114,7 @@ def addGame(gameName):
         gameinfo['genre'],          # now a plain string
         gameinfo['releaseDate'],
         gameinfo['description'],
-        getPic(gameName)
+        gameinfo['image']
     ))
     con.commit()
     print(f"successfully commited {gameinfo['gamename']}")
