@@ -1,6 +1,7 @@
 import { useState } from "react";
+import "./App.css"; // Import your stylesheet
 
-function App() {
+export default function App() {
   const [message, setMessage] = useState("");
   const [gameInfo, setGameInfo] = useState(null);
   const [error, setError] = useState("");
@@ -13,9 +14,7 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ search: message })
     });
-
     const data = await res.json();
-
     if (data.error) {
       setError(data.error);
     } else {
@@ -23,49 +22,62 @@ function App() {
     }
   };
 
+  const getRatingColor = (rating) => {
+    if (rating === null || rating === undefined) return "rating-gray";
+    if (rating > 75) return "rating-green";
+    if (rating > 40) return "rating-yellow";
+    return "rating-red";
+  };
+
   return (
-    <div style={{ padding: "40px" }}>
-      <h1> Steam database</h1>
-      <h2>By Emily Hansen and Khalid Moosa</h2>
-      <p style={{color: "#5e5454ff"}}>Search for your favorite Steam games below!</p>
-      <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a game..."
-        style={{ padding: "10px", width: "250px" }}
-      />
+    <div className="app-container">
+      <h1 className="title">SteamPrice</h1>
+      <h2 className="subtitle">By Emily Hansen and Khalid Moosa</h2>
+      <p className="intro">Search for your favorite Steam games below!</p>
 
-      <button
-        onClick={sendMessage}
-        style={{ marginLeft: "10px", padding: "10px" }}
-      >
-        Submit
-      </button>
+      <div className="input-row">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a game..."
+          className="search-input"
+        />
+        <button onClick={sendMessage} className="submit-btn">Submit</button>
+      </div>
 
-      <div style={{ marginTop: "20px" }}>
-        {error && <div style={{ color: "red" }}>{error}</div>}
+      {error && <div className="error">{error}</div>}
 
-        {gameInfo && (
+      {gameInfo && (
+        <div className="game-card">
+          <div className="top-row">
+            <img src={gameInfo.image} alt={gameInfo.gamename} className="game-img" />
+            <h2 className="game-title">{gameInfo.gamename}</h2>
+          </div>
+          <div className="price-row">
+            <div><strong>Current Price:</strong> ${gameInfo.currentPrice}</div>
+            {gameInfo.currentPrice !== gameInfo.initialPrice && (
+              <>
+                <div><strong>Discount:</strong> {((gameInfo.initialPrice - gameInfo.currentPrice) / gameInfo.initialPrice * 100).toFixed(0)}%</div>
+                <div><strong>Base Price:</strong> ${gameInfo.initialPrice}</div>
+                <div>{gameInfo.priceHistory && (
+                <p><strong>All-Time Low:</strong> ${gameInfo.priceHistory.lowestPriceSeen}</p>)}</div>
+              </>
+            )}
+          </div>
           <div>
-            <div class="top-row">
-              <img src={gameInfo.image} alt={gameInfo.gamename + " logo"} />
-              <h2><strong>{gameInfo.gamename}</strong></h2>
-            </div>
-            <p><strong>Steam URL:</strong> <a href={gameInfo.url} target="_blank">{gameInfo.url}</a></p>
-            <p><strong>Base Price:</strong> ${gameInfo.initialPrice}</p>
-            <p><strong>Current Price:</strong> ${gameInfo.currentPrice}</p>
-            {gameInfo.priceHistory && (
-  <p><strong>All-Time Low:</strong> ${gameInfo.priceHistory.lowestPriceSeen}</p>)}
-
-            <p><strong>Rating:</strong> {gameInfo.rating ?? "N/A"}</p>
-            <p><strong>Genre:</strong> {gameInfo.genre}</p>
-            <p><strong>Release Date:</strong> {gameInfo.releaseDate}</p>
+            <strong>Rating: </strong>
+            <span className={`rating ${getRatingColor(gameInfo.rating)}`}>
+              {gameInfo.rating ?? "N/A"}
+            </span>
+          </div>
+          <div><strong>Genre:</strong> {gameInfo.genre}</div>
+          <div><strong>Release Date:</strong> {gameInfo.releaseDate}</div>
+          <div className="description">
             <p><strong>Description:</strong> {gameInfo.description}</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default App;
