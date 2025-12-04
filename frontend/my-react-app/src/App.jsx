@@ -54,6 +54,9 @@ function App() {
             <p><strong>Steam URL:</strong> <a href={gameInfo.url} target="_blank">{gameInfo.url}</a></p>
             <p><strong>Base Price:</strong> ${gameInfo.initialPrice}</p>
             <p><strong>Current Price:</strong> ${gameInfo.currentPrice}</p>
+            {gameInfo.priceHistory && (
+  <p><strong>All-Time Low:</strong> ${gameInfo.priceHistory.lowestPriceSeen}</p>)}
+
             <p><strong>Rating:</strong> {gameInfo.rating ?? "N/A"}</p>
             <p><strong>Genre:</strong> {gameInfo.genre}</p>
             <p><strong>Release Date:</strong> {gameInfo.releaseDate}</p>
