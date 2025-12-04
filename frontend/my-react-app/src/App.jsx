@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <h1 className="title">Steam Database</h1>
+      <h1 className="title">SteamPrice</h1>
       <h2 className="subtitle">By Emily Hansen and Khalid Moosa</h2>
       <p className="intro">Search for your favorite Steam games below!</p>
 
