@@ -51,7 +51,13 @@ export default function App() {
       {gameInfo && (
         <div className="game-card">
           <div className="top-row">
-            <img src={gameInfo.image} alt={gameInfo.gamename} className="game-img" />
+            {gameInfo.url ? (
+              <a href={gameInfo.url} target="_blank" rel="noopener noreferrer">
+                <img src={gameInfo.image} alt={gameInfo.gamename} className="game-img" />
+              </a>
+            ) : (
+              <img src={gameInfo.image} alt={gameInfo.gamename} className="game-img" />
+            )}
             <h2 className="game-title">{gameInfo.gamename}</h2>
           </div>
           <div className="price-row">
